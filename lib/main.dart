@@ -25,9 +25,10 @@ class MyHomePage extends StatelessWidget {
           centerTitle: true,
         ),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              width: double.infinity,
               child: Card(
                 child: Text('Gráfico'),
                 elevation: 5,
