@@ -62,7 +62,7 @@ class MyHomePage extends StatelessWidget {
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Colors.black,
+                            color: Colors.purple,
                             width: 2,
                           ),
                         ),
@@ -70,7 +70,14 @@ class MyHomePage extends StatelessWidget {
                           horizontal: 15,
                           vertical: 10,
                         ),
-                        child: Text(tr.value.toString()),
+                        child: Text(
+                          tr.value.toString(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.purple,
+                          ),
+                        ),
                       ),
                       Column(
                         children: [
