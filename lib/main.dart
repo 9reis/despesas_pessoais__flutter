@@ -1,5 +1,6 @@
 import 'package:despesas_pessoais__flutter/models/transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 main() => runApp(ExpensesApp());
 
@@ -66,7 +67,7 @@ class MyHomePage extends StatelessWidget {
                             width: 2,
                           ),
                         ),
-                        margin: EdgeInsets.symmetric(
+                        margin: const EdgeInsets.symmetric(
                           horizontal: 15,
                           vertical: 10,
                         ),
@@ -90,7 +91,7 @@ class MyHomePage extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            tr.date.toString(),
+                            DateFormat('d MMM y').format(tr.date),
                             style: TextStyle(
                               fontSize: 12,
                               color: Colors.grey[600],
