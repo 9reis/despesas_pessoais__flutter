@@ -13,13 +13,14 @@ class TransactionList extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: 300,
-      // Precisa ter um comp pai (Container)
-      // com um tamanho pré definido height:300
-      child: SingleChildScrollView(
-        child: Column(
-          children: transactions.map((tr) {
-            return Card(
-                child: Row(
+      child: ListView.builder(
+        // Quantidade de itens que serão renderizadas 
+        itemCount: (transactions.length),
+        itemBuilder: (ctx, index) {
+          final tr = transactions[index];
+
+          return Card(
+            child: Row(
               children: [
                 Container(
                   padding: EdgeInsets.all(10),
@@ -62,11 +63,9 @@ class TransactionList extends StatelessWidget {
                   ],
                 ),
               ],
-            )
-                //Text(tr.title),
-                );
-          }).toList(),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
