@@ -63,6 +63,8 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _transactions.add(newTransaction);
     });
+    // Fecha o Modal
+    Navigator.of(context).pop();
   }
 
   @override
