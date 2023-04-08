@@ -14,7 +14,7 @@ class TransactionList extends StatelessWidget {
       width: double.infinity,
       height: 300,
       child: ListView.builder(
-        // Quantidade de itens que serão renderizadas 
+        // Quantidade de itens que serão renderizadas
         itemCount: (transactions.length),
         itemBuilder: (ctx, index) {
           final tr = transactions[index];
@@ -26,7 +26,7 @@ class TransactionList extends StatelessWidget {
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.purple,
+                      color: Theme.of(context).colorScheme.primary,
                       width: 2,
                     ),
                   ),
@@ -39,7 +39,7 @@ class TransactionList extends StatelessWidget {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
-                      color: Colors.purple,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
                 ),
