@@ -6,6 +6,7 @@ import 'package:despesas_pessoais__flutter/components/transaction_list.dart';
 import 'package:despesas_pessoais__flutter/models/transaction.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 main() => runApp(ExpensesApp());
 
@@ -16,6 +17,12 @@ class ExpensesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // No componente principal da app
+    // A app só executa no modo retrato
+    // SystemChrome.setPreferredOrientations(
+    //   [DeviceOrientation.portraitUp],
+    // );
+
     return MaterialApp(
       home: MyHomePage(),
       debugShowCheckedModeBanner: false,
