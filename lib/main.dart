@@ -21,7 +21,7 @@ class ExpensesApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: tema.copyWith(
           colorScheme: tema.colorScheme.copyWith(
-              primary: Colors.purple,
+              primary: Colors.indigo[900],
               // Cor de destaque
               secondary: Colors.amber),
           textTheme: ThemeData.light().textTheme.copyWith(
