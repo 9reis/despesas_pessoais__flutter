@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TransactionForm extends StatefulWidget {
   TransactionForm(this.onSubmit);
@@ -10,18 +11,37 @@ class TransactionForm extends StatefulWidget {
 }
 
 class _TransactionFormState extends State<TransactionForm> {
-  final titleController = TextEditingController();
+  final _titleController = TextEditingController();
 
-  final valueController = TextEditingController();
+  final _valueController = TextEditingController();
+
+  DateTime? _selectedDate;
 
   _submitForm() {
-    final title = titleController.text;
-    final value = double.tryParse(valueController.text) ?? 0.0;
+    final title = _titleController.text;
+    final value = double.tryParse(_valueController.text) ?? 0.0;
 
     if (title.isEmpty || value <= 0) {
       return;
     }
     widget.onSubmit!(title, value);
+  }
+
+  _showDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2019),
+      lastDate: DateTime.now(),
+      // Func chamada quando o user selecionar ou cancelar
+    ).then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    });
   }
 
   @override
@@ -34,7 +54,7 @@ class _TransactionFormState extends State<TransactionForm> {
           children: [
             TextField(
               decoration: InputDecoration(labelText: 'Titulo'),
-              controller: titleController,
+              controller: _titleController,
               // Envia o form ao clicar no enter do teclado
               onSubmitted: (_) => _submitForm(),
             ),
@@ -42,20 +62,24 @@ class _TransactionFormState extends State<TransactionForm> {
               // Teclado numerico com separador decimal - IOS
               keyboardType: TextInputType.numberWithOptions(decimal: true),
               decoration: InputDecoration(labelText: 'Valor (R\$)'),
-              controller: valueController,
+              controller: _valueController,
               onSubmitted: (_) => _submitForm(),
             ),
             Container(
               height: 70,
               child: Row(
                 children: [
-                  Text('Nenhuma data selecionada'),
+                  Expanded(
+                    child: Text(_selectedDate == null
+                        ? 'Nenhuma data selecionada'
+                        : 'Data Selecionada: ${DateFormat('d/MMM/y').format(_selectedDate!)}'),
+                  ),
                   TextButton(
                     child: Text(
                       'Selecionar data',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    onPressed: () {},
+                    onPressed: _showDatePicker,
                   ),
                 ],
               ),
