@@ -12,24 +12,32 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return transactions.isEmpty
-        ? Column(
-            children: [
-              SizedBox(height: 20),
-              Text(
-                'Nenhuma Transação cadastrada',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              SizedBox(height: 20),
-              Container(
-                height: 220,
-                child: Image.asset(
-                  'assets/images/waiting.png',
-                  // O pai tem que ter uma altura definida
-                  // para esse att funcionar
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ],
+        // Pega a largura e altura maxima do local que o elemento será exibido
+        ? LayoutBuilder(
+            builder: (ctx, constraints) {
+              return Column(
+                children: [
+                  SizedBox(height: constraints.maxHeight * 0.05),
+                  Container(
+                    height: constraints.maxHeight * 0.3,
+                    child: Text(
+                      'Nenhuma Transação cadastrada',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                  ),
+                  SizedBox(height: constraints.maxHeight * 0.05),
+                  Container(
+                    height: constraints.maxHeight * 0.6,
+                    child: Image.asset(
+                      'assets/images/waiting.png',
+                      // O pai tem que ter uma altura definida
+                      // para esse att funcionar
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ],
+              );
+            },
           )
         : ListView.builder(
             // Quantidade de itens que serão renderizadas
@@ -69,6 +77,8 @@ class TransactionList extends StatelessWidget {
                     ),
                     onPressed: () => onRemove(tr.id),
                   ),
+                  // Para condicionais com base na largura
+                  // MediaQuery.of(context).size.width > 400 ? X : Y
                 ),
               );
             },
