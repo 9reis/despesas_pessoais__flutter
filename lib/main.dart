@@ -5,6 +5,7 @@ import 'package:despesas_pessoais__flutter/components/chart.dart';
 import 'package:despesas_pessoais__flutter/components/transaction_form.dart';
 import 'package:despesas_pessoais__flutter/components/transaction_list.dart';
 import 'package:despesas_pessoais__flutter/models/transaction.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -101,31 +102,36 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Widget _getIconButton(IconData icon, Function() fn) {
+    return Platform.isIOS
+        ? GestureDetector(onTap: fn, child: Icon(icon))
+        : IconButton(icon: Icon(icon), onPressed: fn);
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     bool isLandscap = mediaQuery.orientation == Orientation.landscape;
 
-    final appBar = AppBar(
-      title: Text(
-        'Despesas Pessoais',
+    final actions = [
+      if (isLandscap)
+        _getIconButton(_showChart ? Icons.list : Icons.show_chart, () {
+          setState(() {
+            _showChart = !_showChart;
+          });
+        }),
+      _getIconButton(
+        Platform.isIOS ? CupertinoIcons.add : Icons.add,
+        () => _openTransactionFormModal(context),
       ),
-      centerTitle: true,
-      actions: [
-        if (isLandscap)
-          IconButton(
-              icon: Icon(_showChart ? Icons.list : Icons.show_chart),
-              onPressed: () {
-                setState(() {
-                  _showChart = !_showChart;
-                });
-              }),
-        IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () => _openTransactionFormModal(context),
+    ];
+
+    final appBar = AppBar(
+        title: Text(
+          'Despesas Pessoais',
         ),
-      ],
-    );
+        centerTitle: true,
+        actions: actions);
 
     // Altura inicial da aplicacao
     // Removendo altura da appBar e da StatusBar da altura total
@@ -133,48 +139,44 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar.preferredSize.height -
         mediaQuery.padding.top;
 
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // if (isLandscap)
-            //   Row(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: [
-            //       Text('Exibir Grafico'),
-            //       // O switch se adapta de acordo com a Sistema Operacional
-            //       Switch.adaptive(
-            //         activeColor: Theme.of(context).colorScheme.secondary,
-            //         value: _showChart,
-            //         onChanged: (value) {
-            //           setState(() {
-            //             _showChart = value;
-            //           });
-            //         },
-            //       ),
-            //     ],
-            //   ),
-            if (_showChart || !isLandscap)
-              Container(
-                height: availableHeight * (isLandscap ? 0.7 : 0.3),
-                child: Chart(_recentTransactions),
-              ),
-            if (!_showChart || !isLandscap)
-              Container(
-                height: availableHeight * (isLandscap ? 1 : 0.7),
-                child: TransactionList(_transactions, _removeTransaction),
-              ),
-          ],
-        ),
-      ),
-      floatingActionButton: Platform.isIOS
-          ? Container()
-          : FloatingActionButton(
-              child: Icon(Icons.add),
-              onPressed: () => _openTransactionFormModal(context),
+    final bodyPage = SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (_showChart || !isLandscap)
+            Container(
+              height: availableHeight * (isLandscap ? 0.7 : 0.3),
+              child: Chart(_recentTransactions),
             ),
+          if (!_showChart || !isLandscap)
+            Container(
+              height: availableHeight * (isLandscap ? 1 : 0.7),
+              child: TransactionList(_transactions, _removeTransaction),
+            ),
+        ],
+      ),
     );
+
+    return Platform.isIOS
+        ? CupertinoPageScaffold(
+            navigationBar: CupertinoNavigationBar(
+              middle: Text('Despesas Pessoais'),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: actions,
+              ),
+            ),
+            child: bodyPage,
+          )
+        : Scaffold(
+            appBar: appBar,
+            body: bodyPage,
+            floatingActionButton: Platform.isIOS
+                ? Container()
+                : FloatingActionButton(
+                    child: Icon(Icons.add),
+                    onPressed: () => _openTransactionFormModal(context),
+                  ),
+          );
   }
 }
