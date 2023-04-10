@@ -108,13 +108,17 @@ class _MyHomePageState extends State<MyHomePage> {
     final appBar = AppBar(
       title: Text(
         'Despesas Pessoais',
-        // style: TextStyle(
-        //   // Os textos da app cresce de acordo com a selecao do usuario
-        //   fontSize: 20 * MediaQuery.of(context).textScaleFactor,
-        // ),
       ),
       centerTitle: true,
       actions: [
+        if (isLandscap)
+          IconButton(
+              icon: Icon(_showChart ? Icons.list : Icons.show_chart),
+              onPressed: () {
+                setState(() {
+                  _showChart = !_showChart;
+                });
+              }),
         IconButton(
           icon: Icon(Icons.add),
           onPressed: () => _openTransactionFormModal(context),
