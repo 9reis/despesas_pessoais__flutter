@@ -1,4 +1,5 @@
 import 'package:despesas_pessoais__flutter/components/adaptative_button.dart';
+import 'package:despesas_pessoais__flutter/components/adaptative_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -58,16 +59,15 @@ class _TransactionFormState extends State<TransactionForm> {
               bottom: 10 + MediaQuery.of(context).viewInsets.bottom),
           child: Column(
             children: [
-              TextField(
-                decoration: InputDecoration(labelText: 'Titulo'),
+              AdaptativeTextField(
+                label: 'Titulo',
                 controller: _titleController,
-                // Envia o form ao clicar no enter do teclado
                 onSubmitted: (_) => _submitForm(),
               ),
-              TextField(
+              AdaptativeTextField(
                 // Teclado numerico com separador decimal - IOS
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
-                decoration: InputDecoration(labelText: 'Valor (R\$)'),
+                label: 'Valor (R\$)',
                 controller: _valueController,
                 onSubmitted: (_) => _submitForm(),
               ),
