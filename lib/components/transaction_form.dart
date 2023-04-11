@@ -1,7 +1,7 @@
 import 'package:despesas_pessoais__flutter/components/adaptative_button.dart';
+import 'package:despesas_pessoais__flutter/components/adaptative_date_picker.dart';
 import 'package:despesas_pessoais__flutter/components/adaptative_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class TransactionForm extends StatefulWidget {
   TransactionForm(this.onSubmit);
@@ -29,23 +29,6 @@ class _TransactionFormState extends State<TransactionForm> {
     widget.onSubmit!(title, value, _selectedDate!);
   }
 
-  _showDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2019),
-      lastDate: DateTime.now(),
-      // Func chamada quando o user selecionar ou cancelar
-    ).then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
-      setState(() {
-        _selectedDate = pickedDate;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -71,24 +54,13 @@ class _TransactionFormState extends State<TransactionForm> {
                 controller: _valueController,
                 onSubmitted: (_) => _submitForm(),
               ),
-              Container(
-                height: 70,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(_selectedDate == null
-                          ? 'Nenhuma data selecionada'
-                          : 'Data Selecionada: ${DateFormat('d/MMM/y').format(_selectedDate!)}'),
-                    ),
-                    TextButton(
-                      child: Text(
-                        'Selecionar data',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      onPressed: _showDatePicker,
-                    ),
-                  ],
-                ),
+              AdaptativeDatePicker(
+                selectedDate: _selectedDate!,
+                onDateChanged: (newDate) {
+                  setState(() {
+                    _selectedDate = newDate;
+                  });
+                },
               ),
               SizedBox(height: 10),
               Row(
